@@ -1,0 +1,19 @@
+{
+  "webserver": {
+    "bind": "127.0.0.1",
+    "port": 8080
+  },
+  "database": {
+    "type": "sqlite",
+    "options": {}
+  },
+  "registration": {
+    "token": {
+      "enabled": true
+    },
+    "google": {
+      "enabled": false,
+      "registrationLink": ""
+    }
+  }
+}
