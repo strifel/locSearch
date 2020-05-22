@@ -12,10 +12,15 @@ module.exports.Config = class Config {
             fs.copyFileSync("config.json.template", "config.json")
         }
         this.config = JSON.parse(fs.readFileSync("config.json").toString());
+        this.defaultConfig = JSON.parse(fs.readFileSync("config.json.template").toString());
     }
 
     registrationEnabled(regType) {
-        return this.config['registration'][regType]['enabled'];
+        if ('registration' in this.config && 'regType' in this.config['registration'] && 'enabled' in this.config['registration'][regType]) {
+            return this.config['registration'][regType]['enabled'];
+        } else {
+            return false;
+        }
     }
 
     getRegistrationOptions() {
@@ -30,11 +35,19 @@ module.exports.Config = class Config {
     }
 
     getWebserverPort() {
-        return parseInt(this.config['webserver']['port']);
+        if ('webserver' in this.config && 'port' in this.config['webserver']) {
+            return parseInt(this.config['webserver']['port']);
+        } else {
+            return this.defaultConfig['webserver']['port'];
+        }
     }
 
     getBindAddress() {
-        return this.config['webserver']['bind'];
+        if ('webserver' in this.config && 'bind' in this.config['webserver']) {
+            return this.config['webserver']['bind'];
+        } else {
+            return this.defaultConfig['webserver']['bind'];
+        }
     }
 }
 
