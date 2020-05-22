@@ -1,5 +1,6 @@
 let sqlite3 = require('sqlite3');
 const fs = require('fs')
+const geolib = require('geolib');
 
 module.exports.REGTYPE_TOKEN = "token";
 module.exports.REGTYPE_GOOGLE = "google";
@@ -57,6 +58,14 @@ module.exports.Config = class Config {
             return this.defaultConfig['lang'][stringName];
         }
     }
+
+    getMaxDistance() {
+        if ('geo' in this.config && 'maxDistance' in this.config['geo']) {
+            return this.config['geo']['maxDistance'];
+        } else {
+            return this.defaultConfig['geo']['maxDistance'];
+        }
+    }
 }
 
 module.exports.SQLite = class SQLite {
@@ -103,6 +112,22 @@ module.exports.SQLite = class SQLite {
                 }.bind(this))
             }.bind(this));
         }.bind(this));
+    }
+
+    getDistance(token) {
+        return new Promise(function (resolve, reject) {
+            let dists = [];
+            this.db.each("SELECT id, name, usersPositions.lat AS userLat, usersPositions.long AS userLong, position.lat, position.long FROM position LEFT JOIN (SELECT * FROM userPositions WHERE userPositions.user = (SELECT id FROM user WHERE token=?)) AS usersPositions ON position.id = usersPositions.position", token, function(err, row) {
+                if (row['userLat'] == null || row['userLong'] == null) resolve(null);
+                else dists.push(geolib.getDistance({latitude: row['lat'], longitude: row['long']}, {latitude: row['userLat'], longitude: row['userLong']}));
+            }, function () {
+                let aDist = 0;
+                for (let dist in dists)  {
+                    aDist += dists[dist];
+                }
+                resolve(aDist);
+            })
+        }.bind(this))
     }
 }
 

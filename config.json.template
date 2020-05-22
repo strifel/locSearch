@@ -19,5 +19,12 @@
   "lang": {
     "finishMessage": "You finished the Challenge Gratulations!",
     "finishWrongMessage": "Sadly you have made some Mistakes. Your guesses are {meters}m away from the right location"
+  },
+  "geo": {
+    "maxDistance": 100,
+    "zoomPos": {
+      "long": 1.0493,
+      "lat": 8.4302
+    }
   }
 }

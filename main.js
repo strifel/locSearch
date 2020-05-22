@@ -63,6 +63,18 @@ app.get('/api/positions', function (req, res) {
     })).catch(() => {});
 });
 
+// Validates the positions
+app.post('/api/positions', function (req, res) {
+    auth.isAuthorized(req, res).then(() => {
+        db.getDistance(auth.getToken(req)).then(distance =>  {
+           if (distance == null) {
+               res.status(428).json({"error": "Not all position set."});
+           } else {
+               res.json({"message": distance > config.getMaxDistance() ? config.getLang("finishWrongMessage").replace("{meters}", distance) : config.getLang("finishMessage"), "distance": distance})
+           }
+        });
+   }).catch(() => {});
+});
 
 app.listen(config.getWebserverPort(), config.getBindAddress(), function () {
     console.log(`Running app on port ${config.getWebserverPort()}!`);
