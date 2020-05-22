@@ -66,6 +66,14 @@ module.exports.Config = class Config {
             return this.defaultConfig['geo']['maxDistance'];
         }
     }
+
+    getMinSingleDistance() {
+        if ('geo' in this.config && 'minSingleDistance' in this.config['geo']) {
+            return this.config['geo']['minSingleDistance'];
+        } else {
+            return this.defaultConfig['geo']['minSingleDistance'];
+        }
+    }
 }
 
 module.exports.SQLite = class SQLite {
@@ -114,7 +122,7 @@ module.exports.SQLite = class SQLite {
         }.bind(this));
     }
 
-    getDistance(token) {
+    getDistance(token, minDist) {
         return new Promise(function (resolve, reject) {
             let dists = [];
             this.db.each("SELECT id, name, usersPositions.lat AS userLat, usersPositions.long AS userLong, position.lat, position.long FROM position LEFT JOIN (SELECT * FROM userPositions WHERE userPositions.user = (SELECT id FROM user WHERE token=?)) AS usersPositions ON position.id = usersPositions.position", token, function(err, row) {
@@ -123,7 +131,9 @@ module.exports.SQLite = class SQLite {
             }, function () {
                 let aDist = 0;
                 for (let dist in dists)  {
-                    aDist += dists[dist];
+                    if (dists[dist] > minDist) {
+                        aDist += dists[dist];
+                    }
                 }
                 resolve(aDist);
             })

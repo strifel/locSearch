@@ -22,6 +22,7 @@
   },
   "geo": {
     "maxDistance": 100,
+    "minSingleDistance": 10,
     "zoomPos": {
       "long": 1.0493,
       "lat": 8.4302

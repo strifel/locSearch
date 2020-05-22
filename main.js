@@ -65,8 +65,8 @@ app.get('/api/positions', function (req, res) {
 
 // Validates the positions
 app.post('/api/positions', function (req, res) {
-    auth.isAuthorized(req, res).then(() => {
-        db.getDistance(auth.getToken(req)).then(distance =>  {
+    auth.checkAuthorization(req, res).then(() => {
+        db.getDistance(auth.getToken(req), config.getMinSingleDistance()).then(distance =>  {
            if (distance == null) {
                res.status(428).json({"error": "Not all position set."});
            } else {
