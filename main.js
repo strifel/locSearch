@@ -5,28 +5,24 @@ var app = express();
 const dbManager = require('./db');
 var config = new dbManager.Config();
 var db = new dbManager.SQLite();
+const auth = require('./auth');
+auth.db = db;
 app.use(express.static('web'));
 app.use(bodyParser.json())
 
-function isAuthorized(req) {
-    if ('query' in req && 'token' in req.query) {
-        return db.isTokenValid(req.query.token);
-    }
-}
 
 app.get('/api', function (req, res) {
     res.json({"message": "Hello World!"});
+    auth.isAuthorized()
 });
 
-app.get('/api/isValid', function (req, res) {
+app.get('/api/isAuthorized', function (req, res) {
     if (req.query.token) {
-        isAuthorized(req).then((value) => {
+        auth.isAuthorized(req, res).then((value) => {
             if (value) {
                 res.json({"message": "Token is valid", "valid": true});
-            } else {
-                res.json({"message": "Token is not valid", "valid": false});
             }
-        });
+        }).catch(() => {});
     }
 });
 
@@ -46,35 +42,25 @@ app.get('/api/register', function (req, res) {
 
 app.put('/api/positions', function (req, res) {
     // Body has to have id, long and lat
-    isAuthorized(req).then((authorized => {
-        if (authorized) {
-            if ('id' in req.body && 'long' in req.body && 'lat' in req.body) {
-                //TODO The following method should not assume the token to be in the query
-                db.setPos(req.query.token, req.body['id'], req.body['lat'], req.body['long']).then(() => {
-                    db.getPositions(req.query.token).then((result) => {
-                        res.json({"message": "Saved position", positions: result})
-                    })
-                });
-            } else {
-                res.status(400).json({"error": "Wrong Body!"})
-            }
+    auth.isAuthorized(req, res).then((() => {
+        if ('id' in req.body && 'long' in req.body && 'lat' in req.body) {
+            db.setPos(auth.getToken(req), req.body['id'], req.body['lat'], req.body['long']).then(() => {
+                db.getPositions(req.query.token).then((result) => {
+                    res.json({"message": "Saved position", positions: result})
+                })
+            });
         } else {
-            res.status(401).json({"error": "Not logged in!"})
+            res.status(400).json({"error": "Wrong Body!"})
         }
-    }));
+    })).catch(() => {});
 });
 
 app.get('/api/positions', function (req, res) {
-    isAuthorized(req).then((authorized => {
-        if (authorized) {
-            //TODO The following method should not assume the token to be in the query
-            db.getPositions(req.query.token).then((result) => {
-                res.json({"message": "There are positions", positions: result})
-            })
-        } else {
-            res.status(401).json({"error": "Not logged in!"})
-        }
-    }))
+    auth.isAuthorized(req, res).then((() => {
+        db.getPositions(auth.getToken(req)).then((result) => {
+            res.json({"message": "There are positions", positions: result})
+        })
+    })).catch(() => {});
 });
 
 
