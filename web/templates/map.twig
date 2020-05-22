@@ -20,6 +20,9 @@
     document.markers = [];
     document.map.on('click', mapClick)
     reloadMarkers(JSON.parse('{{ positions }}'));
+    if (location.hash && location.hash !== "" && location.hash !== "#"){
+        setEdit(parseInt(location.hash.substr(1)))
+    }
 </script>
 </body>
 </html>
