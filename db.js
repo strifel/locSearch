@@ -63,7 +63,7 @@ module.exports.SQLite = class SQLite {
     getPositions(token) {
         // This combines user entered positions with positions
         return new Promise(function (resolve, reject) {
-            this.db.all("SELECT  id, name, usersPositions.lat, usersPositions.long FROM position LEFT JOIN (SELECT * FROM userPositions WHERE userPositions.user = ?) AS usersPositions ON position.id = usersPositions.position", token, function (err, rows) {
+            this.db.all("SELECT  id, name, usersPositions.lat, usersPositions.long FROM position LEFT JOIN (SELECT * FROM userPositions WHERE userPositions.user = (SELECT id FROM user WHERE token=?)) AS usersPositions ON position.id = usersPositions.position", token, function (err, rows) {
                 resolve(rows);
             });
         }.bind(this));
@@ -71,13 +71,16 @@ module.exports.SQLite = class SQLite {
 
     setPos(token, id, lat, long) {
         return new Promise(function (resolve, reject) {
-            this.db.get("SELECT position FROM userPositions WHERE position=? AND user=?", id, token, function (err, row) {
-                if (row == null) {
-                    this.db.run("INSERT INTO userPositions (user, position, lat, long) VALUES (?, ?, ?, ?)", token, id, lat, long, resolve);
-                } else {
-                    this.db.run("UPDATE userPositions SET lat=?, long=? WHERE user=? AND position=?", lat, long, token, id, resolve)
-                }
-            }.bind(this))
+            this.db.get("SELECT id FROM user WHERE token=?", token, function(err, row) {
+                let user = row['id'];
+                this.db.get("SELECT position FROM userPositions WHERE position=? AND user=?", id, user, function (err, row) {
+                    if (row == null) {
+                        this.db.run("INSERT INTO userPositions (user, position, lat, long) VALUES (?, ?, ?, ?)", user, id, lat, long, resolve);
+                    } else {
+                        this.db.run("UPDATE userPositions SET lat=?, long=? WHERE user=? AND position=?", lat, long, user, id, resolve)
+                    }
+                }.bind(this))
+            }.bind(this));
         }.bind(this));
     }
 }
