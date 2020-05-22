@@ -49,6 +49,14 @@ module.exports.Config = class Config {
             return this.defaultConfig['webserver']['bind'];
         }
     }
+
+    getLang(stringName) {
+        if ('lang' in this.config && stringName in this.config['lang']) {
+            return this.config['lang'][stringName];
+        } else {
+            return this.defaultConfig['lang'][stringName];
+        }
+    }
 }
 
 module.exports.SQLite = class SQLite {
