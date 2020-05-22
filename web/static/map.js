@@ -18,6 +18,7 @@ function reloadMarkers(positions) {
 
 function setEdit(position) {
     editPosition = position;
+    L.DomUtil.addClass(document.map._container,'crosshair-cursor-enabled');
 }
 
 function mapClick(e) {
@@ -26,6 +27,7 @@ function mapClick(e) {
         req.onloadend = function () {
             var resp = JSON.parse(req.responseText);
             editPosition = undefined;
+            L.DomUtil.removeClass(document.map._container,'crosshair-cursor-enabled');
             reloadMarkers(resp['positions'])
         }
         req.open('PUT', '/api/positions');
