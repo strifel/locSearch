@@ -17,7 +17,7 @@ module.exports.Config = class Config {
     }
 
     registrationEnabled(regType) {
-        if ('registration' in this.config && 'regType' in this.config['registration'] && 'enabled' in this.config['registration'][regType]) {
+        if ('registration' in this.config && regType in this.config['registration'] && 'enabled' in this.config['registration'][regType]) {
             return this.config['registration'][regType]['enabled'];
         } else {
             return false;
