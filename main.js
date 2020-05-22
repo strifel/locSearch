@@ -1,4 +1,6 @@
 var express = require('express');
+var cookies = require("cookie-parser")
+const Twig = require("twig");
 const bodyParser = require('body-parser');
 var crypto = require("crypto");
 var app = express();
@@ -6,19 +8,23 @@ const dbManager = require('./db');
 var config = new dbManager.Config();
 var db = new dbManager.SQLite();
 const auth = require('./auth');
+const frontend = require('./frontend')
 auth.db = db;
-app.use(express.static('web'));
-app.use(bodyParser.json())
+app.use('/static', express.static('web/static'));
+app.use(bodyParser.json());
+app.use(cookies())
+app.set('views', './web/templates');
+frontend.registerRoutes(app, db, auth, config);
 
 
 app.get('/api', function (req, res) {
     res.json({"message": "Hello World!"});
-    auth.isAuthorized()
+    auth.checkAuthorization()
 });
 
-app.get('/api/isAuthorized', function (req, res) {
+app.get('/api/checkAuthorization', function (req, res) {
     if (req.query.token) {
-        auth.isAuthorized(req, res).then((value) => {
+        auth.checkAuthorization(req, res).then((value) => {
             if (value) {
                 res.json({"message": "Token is valid", "valid": true});
             }
@@ -42,10 +48,10 @@ app.get('/api/register', function (req, res) {
 
 app.put('/api/positions', function (req, res) {
     // Body has to have id, long and lat
-    auth.isAuthorized(req, res).then((() => {
+    auth.checkAuthorization(req, res).then((() => {
         if ('id' in req.body && 'long' in req.body && 'lat' in req.body) {
             db.setPos(auth.getToken(req), req.body['id'], req.body['lat'], req.body['long']).then(() => {
-                db.getPositions(req.query.token).then((result) => {
+                db.getPositions(auth.getToken(req)).then((result) => {
                     res.json({"message": "Saved position", positions: result})
                 })
             });
@@ -56,7 +62,7 @@ app.put('/api/positions', function (req, res) {
 });
 
 app.get('/api/positions', function (req, res) {
-    auth.isAuthorized(req, res).then((() => {
+    auth.checkAuthorization(req, res).then((() => {
         db.getPositions(auth.getToken(req)).then((result) => {
             res.json({"message": "There are positions", positions: result})
         })

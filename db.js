@@ -59,6 +59,14 @@ module.exports.Config = class Config {
         }
     }
 
+    getClientLang() {
+        if ('clientLang' in this.config ) {
+            return {...this.defaultConfig['clientLang'], ...this.config['clientLang']};
+        } else {
+            return this.defaultConfig['clientLang'];
+        }
+    }
+
     getMaxDistance() {
         if ('geo' in this.config && 'maxDistance' in this.config['geo']) {
             return this.config['geo']['maxDistance'];
@@ -72,6 +80,14 @@ module.exports.Config = class Config {
             return this.config['geo']['minSingleDistance'];
         } else {
             return this.defaultConfig['geo']['minSingleDistance'];
+        }
+    }
+
+    getStartOptions() {
+        if ('map' in this.config && 'startOptions' in this.config['map'] && 'long' in this.config['map']['startOptions'] && 'lat' in this.config['map']['startOptions'] && 'zoom' in this.config['map']['startOptions']) {
+            return this.config['map']['startOptions'];
+        } else {
+            return this.defaultConfig['map']['startOptions'];
         }
     }
 }

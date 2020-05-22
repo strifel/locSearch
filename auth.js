@@ -4,7 +4,7 @@ module.exports.NotLoggedInError = function NotLoggedInError() {
     this.message = 'Not logged in!';
 }
 
-module.exports.isAuthorized = function isAuthorized(req, res) {
+module.exports.checkAuthorization = function checkAuthorization(req, res) {
     let auth = module.exports.db.isTokenValid(module.exports.getToken(req));
     return auth.then((valid) => {
         if (!valid) {
@@ -18,6 +18,10 @@ module.exports.isAuthorized = function isAuthorized(req, res) {
         }
         throw e;
     });
+}
+
+module.exports.isAuthorized = function isAuthorized(req) {
+    return module.exports.db.isTokenValid(module.exports.getToken(req));
 }
 
 module.exports.getToken = function getToken(req) {

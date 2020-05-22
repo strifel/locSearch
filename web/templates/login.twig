@@ -1,0 +1,23 @@
+<html>
+<head>
+    <title>{{ lang.siteName }} - Login</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"  rel="stylesheet" />
+</head>
+<body>
+<script src="/static/login.js"></script>
+<h1>{{ lang.siteName }}</h1>
+<div id="alreadyRegistered">
+    <h3>{{ lang.alreadyRegistered }}</h3>
+    <input class="form-control" id="oldToken" onchange="enteredToken()" placeholder="{{ lang.tokenPlaceholder }}">
+</div>
+<h3>{{ lang.newHere }}</h3>
+{% if authBackends.token %}
+    <button onclick="registerToken(); this.hidden = true; document.getElementById('alreadyRegistered').hidden = true;" class="btn btn-primary">{{ lang.startToken }}</button>
+    <div hidden id="newTokenBox">
+        <p>{{ lang.saveToken }}</p>
+        <input class="form-control" id="newToken" readonly><br>
+        <button class="btn btn-success" onclick="location.reload()">{{ lang.proceedRegistration }}</button>
+    </div>
+{% endif %}
+</body>
+</html>

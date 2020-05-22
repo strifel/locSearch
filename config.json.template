@@ -20,12 +20,24 @@
     "finishMessage": "You finished the Challenge Gratulations!",
     "finishWrongMessage": "Sadly you have made some Mistakes. Your guesses are {meters}m away from the right location"
   },
+  "clientLang": {
+    "siteName": "LocSearch",
+    "startToken": "Start searching without registering!",
+    "tokenPlaceholder": "Enter your token here",
+    "alreadyRegistered": "Already Registered?",
+    "newHere": "New here?",
+    "saveToken": "Save this token somewhere. This is the only way you can save your progress.",
+    "proceedRegistration": "Saved it! Proceed"
+  },
   "geo": {
     "maxDistance": 100,
-    "minSingleDistance": 10,
-    "zoomPos": {
-      "long": 1.0493,
-      "lat": 8.4302
+    "minSingleDistance": 10
+  },
+  "map": {
+    "startOptions": {
+      "long": 13.3778,
+      "lat": 52.5161,
+      "zoom": 18
     }
   }
 }
