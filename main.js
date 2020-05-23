@@ -13,6 +13,7 @@ const frontend = require('./frontend')
 auth.db = db;
 app.use('/static', express.static('web/static'));
 app.use('/image', express.static('image'));
+app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(cookies())
 app.set('views', './web/templates');
