@@ -8,6 +8,10 @@
             crossorigin=""></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
     <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <style type="text/css">
         .leaflet-container.crosshair-cursor-enabled {
             cursor:crosshair;
@@ -17,22 +21,55 @@
 </head>
 <body>
 <div id="map" style="height: 100%"></div>
+<!-- List -->
+<div class="modal fade" id="positionModal" tabindex="-1" role="dialog" aria-labelledby="positionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="positionModalLabel">{{ lang.positions }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    {% for position in positionOptions %}
+                    <a href="#" class="list-group-item list-group-item-action" onclick="setEdit({{ position.id }});$('#positionModal').modal('hide')">{{ position.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ lang.cancel }}</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="/static/map.js"></script>
 <script>
+    // Lang Stuff
+    document.lang = {};
+    document.lang.changePosition = "{{ lang.changePosition }}";
+    // Create Map
     document.map = L.map('map').setView([{{ startLat }}, {{ startLong }}], {{ startZoom }});
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         'attribution':  'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         'useCache': true
     }).addTo(document.map);
-    document.markers = [];
-    document.map.on('click', mapClick)
-    reloadMarkers(JSON.parse('{{ positions }}'));
-    if (location.hash && location.hash !== "" && location.hash !== "#"){
-        setEdit(parseInt(location.hash.substr(1)))
-    }
+    // Add buttons to map
     L.easyButton('<img style="padding-top: 0.2rem;" src="https://api.iconify.design/icons8:finish-flag.svg">', function(btn, map){
         window.open("/check", "_blank")
     }).addTo( document.map );
+    L.easyButton('<img style="padding-top: 0.2rem;" src="https://api.iconify.design/mdi:map-marker-plus.svg">', function(btn, map){
+        $('#positionModal').modal('show')
+    }).addTo( document.map );
+    // Load marker stuff
+    document.markers = [];
+    document.map.on('click', mapClick)
+    reloadMarkers(JSON.parse('{{ currentPositions }}'));
+    // Set change if exists
+    if (location.hash && location.hash !== "" && location.hash !== "#"){
+        setEdit(parseInt(location.hash.substr(1)))
+    }
 </script>
 </body>
 </html>

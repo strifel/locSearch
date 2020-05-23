@@ -29,7 +29,10 @@
     "newHere": "New here?",
     "saveToken": "Save this token somewhere. This is the only way you can save your progress.",
     "proceedRegistration": "Saved it! Proceed",
-    "correctAre": "The following are correct"
+    "correctAre": "The following are correct",
+    "cancel": "Cancel!",
+    "positions": "Positions",
+    "changePosition": "Change position"
   },
   "geo": {
     "maxDistance": 100,

@@ -19,7 +19,8 @@ function index(req, res) {
            db.getPositions(auth.getToken(req)).then((positions) => {
                res.render('map.twig', {
                    lang: config.getClientLang(),
-                   positions: JSON.stringify(positions),
+                   currentPositions: JSON.stringify(positions),
+                   positionOptions: positions,
                    startLong: startOptions['long'],
                    startLat: startOptions['lat'],
                    startZoom: startOptions['zoom']

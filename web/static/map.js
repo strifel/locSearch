@@ -10,7 +10,7 @@ function reloadMarkers(positions) {
     positions.forEach((position) => {
         if (position['lat'] != null && position['long'] != null) {
             var marker = L.marker([position['lat'], position['long']]).addTo(document.map);
-            marker.bindPopup(position['name'] + "<br><a href='#' onclick='setEdit(" + position['id'] + ")'>Change position</a>");
+            marker.bindPopup(position['name'] + "<br><a href='#' onclick='setEdit(" + position['id'] + ")'>" + document.lang.changePosition + "</a>");
             document.markers.push(marker);
         }
     })
