@@ -100,7 +100,7 @@ module.exports.SQLite = class SQLite {
         // Database creation/token loading
         if (!dbExists) {
             this.db.run("CREATE TABLE user (id integer primary key autoincrement, token VARCHAR(32), registrationType VARCHAR(12))");
-            this.db.run("CREATE TABLE position (id integer primary key autoincrement, name STRING, lat INT, long INT)")
+            this.db.run("CREATE TABLE position (id integer primary key autoincrement, name STRING, lat INT, long INT, image STRING)")
             this.db.run("CREATE TABLE userPositions (position INT, user INT,lat INT, long INT)")
         }
     }
@@ -117,7 +117,7 @@ module.exports.SQLite = class SQLite {
     getPositions(token) {
         // This combines user entered positions with positions
         return new Promise(function (resolve, reject) {
-            this.db.all("SELECT  id, name, usersPositions.lat, usersPositions.long FROM position LEFT JOIN (SELECT * FROM userPositions WHERE userPositions.user = (SELECT id FROM user WHERE token=?)) AS usersPositions ON position.id = usersPositions.position", token, function (err, rows) {
+            this.db.all("SELECT  id, name, usersPositions.lat, usersPositions.long, image FROM position LEFT JOIN (SELECT * FROM userPositions WHERE userPositions.user = (SELECT id FROM user WHERE token=?)) AS usersPositions ON position.id = usersPositions.position", token, function (err, rows) {
                 resolve(rows);
             });
         }.bind(this));

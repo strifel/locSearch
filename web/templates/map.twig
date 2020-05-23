@@ -34,7 +34,12 @@
             <div class="modal-body">
                 <div class="list-group">
                     {% for position in positionOptions %}
-                    <a href="#" class="list-group-item list-group-item-action" onclick="setEdit({{ position.id }});$('#positionModal').modal('hide')">{{ position.name }}</a>
+                        <a href="#" class="list-group-item list-group-item-action" onclick="setEdit({{ position.id }});$('#positionModal').modal('hide')">
+                            {% if position.image %}
+                                <img style="width: 100%;padding-bottom: 5px;" src="/image/{{ position.image }}" alt="{{ position.name }}">
+                            {% endif %}
+                            {{ position.name }}
+                        </a>
                     {% endfor %}
                 </div>
             </div>
