@@ -1,12 +1,15 @@
 let db;
 let auth;
 let config;
+let game;
 
-module.exports.registerRoutes = function registerRoutes(app, database, authHandler, configHandler) {
+module.exports.registerRoutes = function registerRoutes(app, database, authHandler, configHandler, gameHandler) {
     app.get('/', index);
+    app.get('/check', check);
     db = database;
     auth = authHandler;
     config = configHandler;
+    game = gameHandler;
 }
 
 function index(req, res) {
@@ -29,4 +32,20 @@ function index(req, res) {
            })
        }
     });
+}
+
+function check(req, res) {
+    auth.checkAuthorization(req, res).then(() => {
+        game.getDistance(db, config, auth.getToken(req)).then((response) => {
+            res.render('check.twig', {
+                lang: config.getClientLang(),
+                response: response
+            })
+        }).catch((response) => {
+            res.render('check.twig', {
+                lang: config.getClientLang(),
+                response: response
+            })
+        })
+    }).catch(() => {});
 }

@@ -2,6 +2,7 @@ var express = require('express');
 var cookies = require("cookie-parser")
 const Twig = require("twig");
 const bodyParser = require('body-parser');
+const game = require('./game');
 var crypto = require("crypto");
 var app = express();
 const dbManager = require('./db');
@@ -14,7 +15,7 @@ app.use('/static', express.static('web/static'));
 app.use(bodyParser.json());
 app.use(cookies())
 app.set('views', './web/templates');
-frontend.registerRoutes(app, db, auth, config);
+frontend.registerRoutes(app, db, auth, config, game);
 
 
 app.get('/api', function (req, res) {
@@ -72,13 +73,11 @@ app.get('/api/positions', function (req, res) {
 // Validates the positions
 app.post('/api/positions', function (req, res) {
     auth.checkAuthorization(req, res).then(() => {
-        db.getDistance(auth.getToken(req), config.getMinSingleDistance()).then(distance =>  {
-           if (distance == null) {
-               res.status(428).json({"error": "Not all position set."});
-           } else {
-               res.json({"message": distance > config.getMaxDistance() ? config.getLang("finishWrongMessage").replace("{meters}", distance) : config.getLang("finishMessage"), "distance": distance})
-           }
-        });
+        game.getDistance(db, config, auth.getToken(req)).then((response) => {
+            res.json(response);
+        }).catch((response) => {
+            res.status(428).json(response);
+        })
    }).catch(() => {});
 });
 

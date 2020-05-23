@@ -1,0 +1,12 @@
+<html>
+<head>
+    <title>Check {{ lang.siteName }}</title>
+</head>
+<body>
+{% if response.error %}
+    <h1 style="color:red">{{ response.error }}</h1>
+{% elseif response.message %}
+    <p>{{ response.message }}</p>
+{% endif %}
+</body>
+</html>
