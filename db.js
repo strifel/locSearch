@@ -138,20 +138,14 @@ module.exports.SQLite = class SQLite {
         }.bind(this));
     }
 
-    getDistance(token, minDist) {
+    getDists(token) {
         return new Promise(function (resolve, reject) {
-            let dists = [];
+            let dists = {};
             this.db.each("SELECT id, name, usersPositions.lat AS userLat, usersPositions.long AS userLong, position.lat, position.long FROM position LEFT JOIN (SELECT * FROM userPositions WHERE userPositions.user = (SELECT id FROM user WHERE token=?)) AS usersPositions ON position.id = usersPositions.position", token, function(err, row) {
                 if (row['userLat'] == null || row['userLong'] == null) resolve(null);
-                else dists.push(geolib.getDistance({latitude: row['lat'], longitude: row['long']}, {latitude: row['userLat'], longitude: row['userLong']}));
+                else dists[row['id']] = {distance: geolib.getDistance({latitude: row['lat'], longitude: row['long']}, {latitude: row['userLat'], longitude: row['userLong']}), name: row['name']};
             }, function () {
-                let aDist = 0;
-                for (let dist in dists)  {
-                    if (dists[dist] > minDist) {
-                        aDist += dists[dist];
-                    }
-                }
-                resolve(aDist);
+                resolve(dists);
             })
         }.bind(this))
     }
