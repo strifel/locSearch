@@ -1,0 +1,6 @@
+node_modules
+image
+config.json
+database.sqlite
+.idea
+.gitignore
