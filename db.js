@@ -60,10 +60,10 @@ module.exports.Config = class Config {
     }
 
     getClientLang() {
-        if ('clientLang' in this.config ) {
-            return {...this.defaultConfig['clientLang'], ...this.config['clientLang']};
+        if ('client' in this.config && 'lang' in this.config['client']) {
+            return {...this.defaultConfig['client']['lang'], ...this.config['client']['lang']};
         } else {
-            return this.defaultConfig['clientLang'];
+            return this.defaultConfig['client']['lang'];
         }
     }
 
@@ -88,6 +88,14 @@ module.exports.Config = class Config {
             return this.config['map']['startOptions'];
         } else {
             return this.defaultConfig['map']['startOptions'];
+        }
+    }
+
+    getShowDistanceForCorrect() {
+        if ('client' in this.config && 'showDistanceForCorrect' in this.config['client']) {
+            return this.config['client']['showDistanceForCorrect'];
+        } else {
+            return this.defaultConfig['client']['showDistanceForCorrect'];
         }
     }
 }

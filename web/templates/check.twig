@@ -10,7 +10,7 @@
     <p>{{ lang.correctAre }}: </p>
     <ul>
         {% for correct in response.correct %}
-            <li>{{ correct.name }} ({{ correct.distance }}m)</li>
+            <li>{{ correct.name }} {% if showCorrectDistances %}({{ correct.distance }}m){% endif %}</li>
         {% endfor %}
     </ul>
 {% endif %}

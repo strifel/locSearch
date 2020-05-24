@@ -40,7 +40,8 @@ function check(req, res) {
         game.getDistance(db, config, auth.getToken(req)).then((response) => {
             res.render('check.twig', {
                 lang: config.getClientLang(),
-                response: response
+                response: response,
+                showCorrectDistances: config.getShowDistanceForCorrect()
             })
         }).catch((response) => {
             res.render('check.twig', {
