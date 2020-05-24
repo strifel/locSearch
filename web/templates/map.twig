@@ -61,11 +61,11 @@
         'useCache': true
     }).addTo(document.map);
     // Add buttons to map
-    L.easyButton('<img style="padding-top: 0.2rem;" src="https://api.iconify.design/icons8:finish-flag.svg">', function(btn, map){
-        window.open("/check", "_blank")
-    }).addTo( document.map );
     L.easyButton('<img style="padding-top: 0.2rem;" src="https://api.iconify.design/mdi:map-marker-plus.svg">', function(btn, map){
         $('#positionModal').modal('show')
+    }).addTo( document.map );
+    L.easyButton('<img style="padding-top: 0.2rem;" src="https://api.iconify.design/ant-design:check-circle-outlined.svg?height=16">', function(btn, map){
+        window.open("/check", "_blank")
     }).addTo( document.map );
     // Load marker stuff
     document.markers = [];
