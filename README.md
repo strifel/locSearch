@@ -5,12 +5,17 @@ Ich habe dieses Programm für einen [Geocache](https://geocaching.com) entwickel
 ## Installation
 1. Das Repository sollte gecloned werden
 2. `npm install`
-3. `npm run run`
+(3. `npm run run`)
 4. Es sollte ein https reverse Proxy mit z.B. nginx oder Apache2 konfiguriert werden.
 ## Konfiguration
 - Die Konfiguration erfolgt über die, nach dem ersten Start generierte, config.json
-- Des weiteren müssen die Positionen (noch) manuell in die Datenbank eingetragen werden. (Hier eignet sich zum Beispiel https://sqlitebrowser.org/)
-- Bilder können in einen image Ordner im standardverzeichnis gelegt werden. In der Datenbank muss dann nur der Bild name angegeben werden.
+- Bilder müssen in einen image Ordner im standardverzeichnis gelegt werden. (Noch unbennant)
+- `npm run install`
+- Auf den in der Config angegebenen Port zugreifen.
+- Hier können jetzt die Positionen hinzugefügt werden
+- Mit STRG+C den install Prozess am Ende beenden
+- Am besten nun einmal die database.sqlite an einem anderen Ort sichern
+- Es kann mit `npm run run` der Server gestartet werden
 - Sollten weitere statische Dateien (z.B. well-known) direkt von node verteilt werden kann dies über den public Ordner passieren. Empfohlen wird jedoch dies direkt über einen Webserver zu machen.
 ## Troubleshooting
 - LocSearch funktioniert nicht in einem Unterordner

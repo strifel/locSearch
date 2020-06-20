@@ -1,0 +1,41 @@
+<html>
+<body>
+<img src="/image/{{ file }}" alt="Picture" style="height: 50%">
+<br><br>
+<form>
+    <label>
+        File name:
+        <input type="text" name="filename" placeholder="picture.jpg">
+    </label><br>
+    <label>
+        Title:
+        <input type="text" name="name">
+    </label><br>
+    <label>
+        Lat:
+        <input type="text" name="lat" placeholder="52.5161">
+    </label><br>
+    <label>
+        Long:
+        <input type="text" name="long" placeholder="13.3778">
+    </label><br><br>
+    <button type="submit" formmethod="post">Save</button>
+</form>
+<button onclick="skip()">Skip</button>
+<script>
+    function skip() {
+        let req = new XMLHttpRequest();
+        req.onloadend = () => {
+            location.reload();
+        }
+        req.open("POST", "/skip");
+        req.send();
+    }
+</script>
+</body>
+<style>
+    input {
+        margin-top: 10px;
+    }
+</style>
+</html>
