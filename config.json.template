@@ -10,10 +10,6 @@
   "registration": {
     "token": {
       "enabled": true
-    },
-    "google": {
-      "enabled": false,
-      "registrationLink": ""
     }
   },
   "lang": {
