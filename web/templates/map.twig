@@ -56,10 +56,12 @@
     document.lang.changePosition = "{{ lang.changePosition }}";
     // Create Map
     document.map = L.map('map').setView([{{ startLat }}, {{ startLong }}], {{ startZoom }});
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        'attribution':  'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    {% for layer in mapLayers %}
+    L.tileLayer('{{ layer.url }}', {
+        'attribution':  'Map data &copy; {{ layer.attribution }}',
         'useCache': true
     }).addTo(document.map);
+    {% endfor %}
     // Add buttons to map
     L.easyButton('<img style="padding-top: 0.2rem;" src="https://api.iconify.design/mdi:map-marker-plus.svg">', function(btn, map){
         $('#positionModal').modal('show')

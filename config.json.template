@@ -42,6 +42,12 @@
       "long": 13.3778,
       "lat": 52.5161,
       "zoom": 18
-    }
+    },
+    "layers": [
+      {
+        "url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        "attribution": "<a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors"
+      }
+    ]
   }
 }

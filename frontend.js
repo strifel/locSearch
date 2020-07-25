@@ -15,15 +15,16 @@ module.exports.registerRoutes = function registerRoutes(app, database, authHandl
 function index(req, res) {
     auth.isAuthorized(req).then((valid) => {
        if (valid) {
-           let startOptions = config.getStartOptions();
+           let mapOptions = config.getMapOptions();
            db.getPositions(auth.getToken(req)).then((positions) => {
                res.render('map.twig', {
                    lang: config.getClientLang(),
                    currentPositions: JSON.stringify(positions),
                    positionOptions: positions,
-                   startLong: startOptions['long'],
-                   startLat: startOptions['lat'],
-                   startZoom: startOptions['zoom']
+                   startLong: mapOptions['startOptions']['long'],
+                   startLat: mapOptions['startOptions']['lat'],
+                   startZoom: mapOptions['startOptions']['zoom'],
+                   mapLayers: mapOptions['layers']
                })
            })
        } else {

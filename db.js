@@ -83,11 +83,11 @@ module.exports.Config = class Config {
         }
     }
 
-    getStartOptions() {
-        if ('map' in this.config && 'startOptions' in this.config['map'] && 'long' in this.config['map']['startOptions'] && 'lat' in this.config['map']['startOptions'] && 'zoom' in this.config['map']['startOptions']) {
-            return this.config['map']['startOptions'];
+    getMapOptions() {
+        if ('map' in this.config) {
+            return {...this.defaultConfig['map'], ...this.config['map']};
         } else {
-            return this.defaultConfig['map']['startOptions'];
+            return this.defaultConfig['map'];
         }
     }
 
