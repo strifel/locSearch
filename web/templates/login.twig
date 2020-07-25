@@ -5,19 +5,38 @@
 </head>
 <body>
 <script src="/static/login.js"></script>
-<h1>{{ lang.siteName }}</h1>
-<div id="alreadyRegistered">
-    <h3>{{ lang.alreadyRegistered }}</h3>
-    <input class="form-control" id="oldToken" onchange="enteredToken()" placeholder="{{ lang.tokenPlaceholder }}">
-</div>
-<h3>{{ lang.newHere }}</h3>
-{% if authBackends.token %}
-    <button onclick="registerToken(); this.hidden = true; document.getElementById('alreadyRegistered').hidden = true;" class="btn btn-primary">{{ lang.startToken }}</button>
-    <div hidden id="newTokenBox">
-        <p>{{ lang.saveToken }}</p>
-        <input class="form-control" id="newToken" readonly><br>
-        <button class="btn btn-success" onclick="location.reload()">{{ lang.proceedRegistration }}</button>
+<div id="loginBox">
+    <h1>{{ lang.siteName }}</h1>
+    <div id="alreadyRegistered">
+        <h3>{{ lang.alreadyRegistered }}</h3>
+        <input class="form-control" id="oldToken" onchange="enteredToken()" placeholder="{{ lang.tokenPlaceholder }}">
     </div>
-{% endif %}
+    <h3>{{ lang.newHere }}</h3>
+    {% if authBackends.token %}
+        <button onclick="registerToken(); this.hidden = true; document.getElementById('alreadyRegistered').hidden = true;" class="btn btn-primary">{{ lang.startToken }}</button>
+        <div hidden id="newTokenBox">
+            <p>{{ lang.saveToken }}</p>
+            <input class="form-control" id="newToken" readonly><br>
+            <button class="btn btn-success" onclick="location.reload()">{{ lang.proceedRegistration }}</button>
+        </div>
+    {% endif %}
+</div>
 </body>
+<style>
+    body {
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        padding: 0;
+        margin: 0;
+        background-color: #2f2f2f;
+    }
+    #loginBox {
+        background-color: white;
+        border-radius: 10px;
+        padding: 15px;
+        min-width: 30%;
+        min-height: 40%;
+    }
+</style>
 </html>
