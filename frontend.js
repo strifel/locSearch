@@ -24,7 +24,8 @@ function index(req, res) {
                    startLong: mapOptions['startOptions']['long'],
                    startLat: mapOptions['startOptions']['lat'],
                    startZoom: mapOptions['startOptions']['zoom'],
-                   mapLayers: mapOptions['layers']
+                   mapLayers: mapOptions['layers'],
+                   showManualCoordinatesPrompt: config.getShowManualCoordinatesPrompt()
                })
            })
        } else {

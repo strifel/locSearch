@@ -25,6 +25,9 @@ function reloadMarkers(positions) {
 function setEdit(position) {
     editPosition = position;
     L.DomUtil.addClass(document.map._container,'crosshair-cursor-enabled');
+    if (document.config.showManualCoordinatesPrompt) {
+        $('#coordModal').modal('show');
+    }
 }
 
 function mapClick(e) {

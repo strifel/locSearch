@@ -98,6 +98,14 @@ module.exports.Config = class Config {
             return this.defaultConfig['client']['showDistanceForCorrect'];
         }
     }
+
+    getShowManualCoordinatesPrompt() {
+        if ('client' in this.config && 'showManualCoordinatesPrompt' in this.config['client']) {
+            return this.config['client']['showManualCoordinatesPrompt'];
+        } else {
+            return this.defaultConfig['client']['showManualCoordinatesPrompt'];
+        }
+    }
 }
 
 module.exports.SQLite = class SQLite {

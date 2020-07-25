@@ -19,6 +19,7 @@
   },
   "client": {
     "showDistanceForCorrect": false,
+    "showManualCoordinatesPrompt": false,
     "lang": {
       "siteName": "LocSearch",
       "startToken": "Start searching without registering!",
@@ -30,7 +31,11 @@
       "correctAre": "The following are correct",
       "cancel": "Cancel!",
       "positions": "Positions",
-      "changePosition": "Change position"
+      "changePosition": "Change position",
+      "enterCoordinates": "Enter coordinates",
+      "placeOnMap": "Place on Map",
+      "latitude": "Latitude",
+      "longitude": "Longitude"
     }
   },
   "geo": {

@@ -34,7 +34,7 @@
             <div class="modal-body">
                 <div class="list-group">
                     {% for position in positionOptions %}
-                        <a href="#" class="list-group-item list-group-item-action" onclick="setEdit({{ position.id }});$('#positionModal').modal('hide')">
+                        <a href="#" class="list-group-item list-group-item-action" onclick="$('#positionModal').modal('hide');setEdit({{ position.id }})">
                             {% if position.image %}
                                 <img style="width: 100%;padding-bottom: 5px;" src="/image/{{ position.image }}" alt="{{ position.name }}">
                             {% endif %}
@@ -49,11 +49,41 @@
         </div>
     </div>
 </div>
+<!-- Manual Coordinates Form -->
+<div class="modal fade" id="coordModal" tabindex="-1" role="dialog" aria-labelledby="coordModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="positionModalLabel">{{ lang.enterCoordinates }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>
+                    {{ lang.latitude }}
+                    <input class="form-control" id="manuallyLat" placeholder="52.5161">
+                </label>
+                <label>
+                    {{ lang.longitude }}
+                    <input class="form-control" id="manuallyLong" placeholder="13.3778">
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="move(editPosition, {lat: document.getElementById('manuallyLat').value, lng: document.getElementById('manuallyLong').value});$('#coordModal').modal('hide');">{{ lang.placeThere }}</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#coordModal').modal('hide');">{{ lang.placeOnMap }}</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="/static/map.js"></script>
 <script>
     // Lang Stuff
     document.lang = {};
     document.lang.changePosition = "{{ lang.changePosition }}";
+    // Config stuff
+    document.config = {};
+    document.config.showManualCoordinatesPrompt = {{ showManualCoordinatesPrompt }};
     // Create Map
     document.map = L.map('map').setView([{{ startLat }}, {{ startLong }}], {{ startZoom }});
     {% for layer in mapLayers %}
