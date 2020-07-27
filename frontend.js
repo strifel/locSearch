@@ -25,7 +25,8 @@ function index(req, res) {
                    startLat: mapOptions['startOptions']['lat'],
                    startZoom: mapOptions['startOptions']['zoom'],
                    mapLayers: mapOptions['layers'],
-                   showManualCoordinatesPrompt: config.getShowManualCoordinatesPrompt()
+                   showManualCoordinatesPrompt: config.getShowManualCoordinatesPrompt(),
+                   customScripts: mapOptions['customScripts']
                })
            })
        } else {

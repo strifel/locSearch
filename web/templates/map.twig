@@ -108,5 +108,8 @@
         setEdit(parseInt(location.hash.substr(1)))
     }
 </script>
+{% for script in customScripts %}
+<script src="/static/{{ script }}"></script>
+{% endfor %}
 </body>
 </html>

@@ -12,6 +12,7 @@ const auth = require('./auth');
 const frontend = require('./frontend')
 auth.db = db;
 app.use('/static', express.static('web/static'));
+app.use('/static', express.static('custom'));
 app.use('/image', express.static('image'));
 app.use(express.static('public'));
 app.use(bodyParser.json());
