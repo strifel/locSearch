@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "run": "node .",
-    "install": "node install.js"
+    "setupImage": "node setUpImageSearch.js"
   },
   "keywords": [],
   "author": "strifel",
@@ -18,5 +18,8 @@
     "geolib": "^3.2.1",
     "sqlite3": "^4.1.1",
     "twig": "^1.15.1"
+  },
+  "devDependencies": {
+    "exifr": "^6.1.1"
   }
 }

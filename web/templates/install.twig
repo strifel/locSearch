@@ -13,11 +13,19 @@
     </label><br>
     <label>
         Lat:
-        <input type="text" name="lat" placeholder="52.5161">
+        {% if lat is defined %}
+            <input type="text" name="lat" value="{{ lat }}">
+        {% else %}
+            <input type="text" name="lat" placeholder="52.5161">
+        {% endif %}
     </label><br>
     <label>
         Long:
-        <input type="text" name="long" placeholder="13.3778">
+        {% if long is defined %}
+            <input type="text" name="long" value="{{ long }}">
+        {% else %}
+            <input type="text" name="long" placeholder="13.3778">
+        {% endif %}
     </label><br><br>
     <button type="submit" formmethod="post">Save</button>
 </form>
