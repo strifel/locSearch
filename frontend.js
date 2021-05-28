@@ -26,6 +26,7 @@ function index(req, res) {
                    startZoom: mapOptions['startOptions']['zoom'],
                    mapLayers: mapOptions['layers'],
                    showManualCoordinatesPrompt: config.getShowManualCoordinatesPrompt(),
+                   showQuestView: config.getShowCurrentQuest(),
                    customScripts: mapOptions['customScripts']
                })
            })

@@ -1,4 +1,5 @@
 var editPosition;
+var positions;
 
 function reloadMarkers(positions) {
     for (var marker in document.markers) {
@@ -7,6 +8,7 @@ function reloadMarkers(positions) {
         }
     }
     document.markers = [];
+    this.positions = [];
     positions.forEach((position) => {
         if (position['lat'] != null && position['long'] != null) {
             var marker = L.marker([position['lat'], position['long']], {draggable:'true'}).addTo(document.map);
@@ -19,6 +21,7 @@ function reloadMarkers(positions) {
             });
             document.markers.push(marker);
         }
+        this.positions[position['id'].toString()] = position;
     })
 }
 
@@ -28,6 +31,23 @@ function setEdit(position) {
     if (document.config.showManualCoordinatesPrompt) {
         $('#coordModal').modal('show');
     }
+    // Set quest view
+    var positionData = positions[position];
+    document.getElementById('quest-text').innerHTML = positionData['name'];
+    if (positionData['image']) {
+        document.getElementById('quest-image').src = '/image/' + positionData['image']
+        document.getElementById('quest-image').style.display = 'inherit';
+    } else {
+        document.getElementById('quest-image').style.display = 'none';
+    }
+    document.getElementById('quest').style.display = 'inherit';
+}
+
+function resetEdit() {
+    editPosition = undefined;
+    document.getElementById('quest').style.display = 'none';
+    L.DomUtil.removeClass(document.map._container,'crosshair-cursor-enabled');
+
 }
 
 function mapClick(e) {
@@ -41,8 +61,7 @@ function move(pos, latlng) {
     var req = new XMLHttpRequest();
     req.onloadend = function () {
         var resp = JSON.parse(req.responseText);
-        editPosition = undefined;
-        L.DomUtil.removeClass(document.map._container,'crosshair-cursor-enabled');
+        resetEdit();
         reloadMarkers(resp['positions'])
     }
     req.open('PUT', '/api/positions');

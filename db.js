@@ -106,6 +106,14 @@ module.exports.Config = class Config {
             return this.defaultConfig['client']['showManualCoordinatesPrompt'];
         }
     }
+
+    getShowCurrentQuest() {
+        if ('client' in this.config && 'showCurrentQuest' in this.config['client']) {
+            return this.config['client']['showCurrentQuest'];
+        } else {
+            return this.defaultConfig['client']['showCurrentQuest'];
+        }
+    }
 }
 
 module.exports.SQLite = class SQLite {

@@ -16,10 +16,25 @@
         .leaflet-container.crosshair-cursor-enabled {
             cursor:crosshair;
         }
+        #quest {
+            background-color: white;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            z-index: 401;
+            border-bottom-left-radius: 20px;
+        }
     </style>
 
 </head>
 <body>
+<div id="quest" {% if not showQuestView %}hidden{% endif %} style="display: none">
+    <div style="padding: 10px">
+        <img id="quest-image" alt="current image" style="display: none; height: 5rem;" />
+        <p id="quest-text"></p>
+    </div>
+</div>
 <div id="map" style="height: 100%"></div>
 <!-- List -->
 <div class="modal fade" id="positionModal" tabindex="-1" role="dialog" aria-labelledby="positionModalLabel" aria-hidden="true">
