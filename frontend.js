@@ -45,7 +45,8 @@ function check(req, res) {
             res.render('check.twig', {
                 lang: config.getClientLang(),
                 response: response,
-                showCorrectDistances: config.getShowDistanceForCorrect()
+                showCorrectDistances: config.getShowDistanceForCorrect(),
+                showWhichWrong: config.getShowWhichWrong()
             })
         }).catch((response) => {
             res.render('check.twig', {

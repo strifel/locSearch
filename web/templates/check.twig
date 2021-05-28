@@ -7,6 +7,14 @@
     <h1 style="color:red">{{ response.error }}</h1>
 {% elseif response.message %}
     <p>{{ response.message }}</p><br>
+    {% if showWhichWrong %}
+        <p>{{ lang.wrongAre }}: </p>
+        <ul>
+            {% for wrong in response.wrong %}
+                <li>{{ wrong.name }}</li>
+            {% endfor %}
+        </ul><br>
+    {% endif %}
     <p>{{ lang.correctAre }}: </p>
     <ul>
         {% for correct in response.correct %}

@@ -99,6 +99,14 @@ module.exports.Config = class Config {
         }
     }
 
+    getShowWhichWrong() {
+        if ('client' in this.config && 'showWhichWrong' in this.config['client']) {
+            return this.config['client']['showWhichWrong'];
+        } else {
+            return this.defaultConfig['client']['showWhichWrong'];
+        }
+    }
+
     getShowManualCoordinatesPrompt() {
         if ('client' in this.config && 'showManualCoordinatesPrompt' in this.config['client']) {
             return this.config['client']['showManualCoordinatesPrompt'];
