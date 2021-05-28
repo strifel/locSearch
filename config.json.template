@@ -22,6 +22,12 @@
     "showWhichWrong": true,
     "showManualCoordinatesPrompt": false,
     "showCurrentQuest": false,
+    "allowCheckWhileNotAllSet": false,
+    "guided": {
+      "enable": false,
+      "checkSolution": true,
+      "forceCoordinateWindow": false
+    },
     "lang": {
       "siteName": "LocSearch",
       "startToken": "Start searching without registering!",

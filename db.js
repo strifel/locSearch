@@ -115,11 +115,27 @@ module.exports.Config = class Config {
         }
     }
 
+    getAllowCheckWhileNotAllSet() {
+        if ('client' in this.config && 'allowCheckWhileNotAllSet' in this.config['client']) {
+            return this.config['client']['allowCheckWhileNotAllSet'];
+        } else {
+            return this.defaultConfig['client']['allowCheckWhileNotAllSet'];
+        }
+    }
+
     getShowCurrentQuest() {
         if ('client' in this.config && 'showCurrentQuest' in this.config['client']) {
             return this.config['client']['showCurrentQuest'];
         } else {
             return this.defaultConfig['client']['showCurrentQuest'];
+        }
+    }
+
+    getGuidedOptions() {
+        if ('client' in this.config && 'guided' in this.config['client']) {
+            return {...this.defaultConfig['client']['guided'], ...this.config['client']['guided']};
+        } else {
+            return this.defaultConfig['client']['guided'];
         }
     }
 }
@@ -170,12 +186,18 @@ module.exports.SQLite = class SQLite {
         }.bind(this));
     }
 
-    getDists(token) {
+    getDists(token, rejectWhenNotAllSet = true) {
         return new Promise(function (resolve, reject) {
             let dists = {};
             this.db.each("SELECT id, name, usersPositions.lat AS userLat, usersPositions.long AS userLong, position.lat, position.long FROM position LEFT JOIN (SELECT * FROM userPositions WHERE userPositions.user = (SELECT id FROM user WHERE token=?)) AS usersPositions ON position.id = usersPositions.position", token, function(err, row) {
-                if (row['userLat'] == null || row['userLong'] == null) resolve(null);
-                else dists[row['id']] = {distance: geolib.getDistance({latitude: row['lat'], longitude: row['long']}, {latitude: row['userLat'], longitude: row['userLong']}), name: row['name']};
+                let distance = undefined;
+                if (row['userLat'] == null || row['userLong'] == null) {
+                    if (rejectWhenNotAllSet) resolve(null);
+                    distance = Number.MAX_SAFE_INTEGER
+                }
+                if (!distance) distance =
+                    geolib.getDistance({latitude: row['lat'], longitude: row['long']}, {latitude: row['userLat'], longitude: row['userLong']});
+                dists[row['id']] = {distance: distance, name: row['name']};
             }, function () {
                 resolve(dists);
             })

@@ -1,7 +1,7 @@
 module.exports.getDistance = function getDistance(db, config, token) {
     let minDistance = config.getMinSingleDistance();
     return new Promise((resolve, reject) => {
-        db.getDists(token).then(dists =>  {
+        db.getDists(token, config.getAllowCheckWhileNotAllSet()).then(dists =>  {
             if (dists == null) reject({"error": config.getLang("notAllPositionSet")});
             let distance = 0;
             let correct = [];
