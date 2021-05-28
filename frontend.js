@@ -27,6 +27,7 @@ function index(req, res) {
                    mapLayers: mapOptions['layers'],
                    showManualCoordinatesPrompt: config.getShowManualCoordinatesPrompt(),
                    showQuestView: config.getShowCurrentQuest(),
+                   guidedOptions: JSON.stringify(config.getGuidedOptions()),
                    customScripts: mapOptions['customScripts']
                })
            })

@@ -17,8 +17,18 @@ Ich habe dieses Programm für einen [Geocache](https://geocaching.com) entwickel
 - Am besten nun einmal die database.sqlite an einem anderen Ort sichern
 - Es kann mit `npm run run` der Server gestartet werden
 - Sollten weitere statische Dateien (z.B. well-known) direkt von node verteilt werden kann dies über den public Ordner passieren. Empfohlen wird jedoch dies direkt über einen Webserver zu machen.
+## Guided Modus
+Das beste Nutzererlebnis mit dem Guided Modus gibt es wenn folgende Einstellungen aktiviert werden:
+- client.showCurrentQuest
+- client.allowCheckWhileNotAllSet
+- client.showWhichWrong
+- client.guided.enable
+- client.guided.checkSolution
+
+Außerdem sollte client.guided.forceCoordinateWindow deaktiviert gelassen werden.
 ## Troubleshooting
 - LocSearch funktioniert nicht in einem Unterordner
+- Für client.guided.checkSolution müssen client.allowCheckWhileNotAllSet und client.showWhichWrong aktiviert sein.
 ## Contribution
 PRs und Issues sind gerne gesehen.
 ## License

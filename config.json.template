@@ -25,7 +25,7 @@
     "allowCheckWhileNotAllSet": false,
     "guided": {
       "enable": false,
-      "checkSolution": true,
+      "checkSolution": false,
       "forceCoordinateWindow": false
     },
     "lang": {
@@ -44,7 +44,8 @@
       "enterCoordinates": "Enter coordinates",
       "placeOnMap": "Place on Map",
       "latitude": "Latitude",
-      "longitude": "Longitude"
+      "longitude": "Longitude",
+      "guidedIsWrong": "This position seems to be wrong"
     }
   },
   "geo": {

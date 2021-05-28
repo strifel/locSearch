@@ -32,7 +32,8 @@
 <div id="quest" {% if not showQuestView %}hidden{% endif %} style="display: none">
     <div style="padding: 10px">
         <img id="quest-image" alt="current image" style="display: none; height: 5rem;" />
-        <p id="quest-text"></p>
+        <p id="quest-text"></p><br>
+        {% if showManualCoordinatesPrompt %}<a href="#" onclick="$('#coordModal').modal('show');">{{ lang.enterCoordinates }}</a>{% endif %}
     </div>
 </div>
 <div id="map" style="height: 100%"></div>
@@ -96,14 +97,18 @@
     // Lang Stuff
     document.lang = {};
     document.lang.changePosition = "{{ lang.changePosition }}";
+    document.lang.guidedIsWrong = "{{ lang.guidedIsWrong }}";
     // Config stuff
     document.config = {};
     document.config.showManualCoordinatesPrompt = {{ showManualCoordinatesPrompt }};
+    document.config.guided = JSON.parse('{{ guidedOptions }}');
     // Create Map
     document.map = L.map('map').setView([{{ startLat }}, {{ startLong }}], {{ startZoom }});
     {% for layer in mapLayers %}
     L.tileLayer('{{ layer.url }}', {
         'attribution':  'Map data &copy; {{ layer.attribution }}',
+        'maxZoom': 24,
+        'maxNativeZoom': 18,
         'useCache': true
     }).addTo(document.map);
     {% endfor %}
