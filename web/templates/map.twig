@@ -113,12 +113,16 @@
     }).addTo(document.map);
     {% endfor %}
     // Add buttons to map
-    L.easyButton('<img style="padding-top: 0.2rem;" src="https://api.iconify.design/mdi:map-marker-plus.svg">', function(btn, map){
-        $('#positionModal').modal('show')
-    }).addTo( document.map );
-    L.easyButton('<img style="padding-top: 0.2rem;" src="https://api.iconify.design/ant-design:check-circle-outlined.svg?height=16">', function(btn, map){
-        window.open("/check", "_blank")
-    }).addTo( document.map );
+    if (!document.config.guided.hideManualPrompt) {
+        L.easyButton('<img style="padding-top: 0.2rem;" src="https://api.iconify.design/mdi:map-marker-plus.svg">', function(btn, map){
+            $('#positionModal').modal('show')
+        }).addTo( document.map );
+    }
+    if (!document.config.guided.hideCheckPrompt) {
+        L.easyButton('<img style="padding-top: 0.2rem;" src="https://api.iconify.design/ant-design:check-circle-outlined.svg?height=16">', function(btn, map){
+            window.open("/check", "_blank")
+        }).addTo( document.map );
+    }
     // Load marker stuff
     document.markers = [];
     document.map.on('click', mapClick)
