@@ -24,15 +24,18 @@ function reloadMarkers(positions) {
         this.positions[position['id'].toString()] = position;
     })
     // If guided is enabled select next available quest
-    if (document.config.guided.enable) {
-        for (let pos in this.positions) {
-            if (!this.positions.hasOwnProperty(pos)) continue;
-            // Continue if already set
-            if (this.positions[pos]['lat'] || this.positions[pos]['long']) continue;
-            setEdit(pos);
-            break;
-        }
+    if (document.config.guided.enable) selectNext(document.config.guided.autoCallCheck);
+}
+
+function selectNext(showCheck) {
+    for (let pos in this.positions) {
+        if (!this.positions.hasOwnProperty(pos)) continue;
+        // Continue if already set
+        if (this.positions[pos]['lat'] || this.positions[pos]['long']) continue;
+        setEdit(pos);
+        return;
     }
+    if (showCheck) window.open('/check', '_blank')
 }
 
 function setEdit(position) {

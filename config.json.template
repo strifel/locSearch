@@ -28,7 +28,8 @@
       "checkSolution": false,
       "forceCoordinateWindow": false,
       "hideManualPrompt": false,
-      "hideCheckPrompt": false
+      "hideCheckPrompt": false,
+      "autoCallCheck": false
     },
     "lang": {
       "siteName": "LocSearch",
