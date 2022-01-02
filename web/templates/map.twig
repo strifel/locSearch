@@ -92,6 +92,22 @@
         </div>
     </div>
 </div>
+<!-- Wrong coordinates Modal -->
+<div class="modal fade" id="wrongModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="coordModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="positionModalLabel">{{ lang.guidedIsWrong }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">{{ lang.cancel }}</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="/static/map.js"></script>
 <script>
     // Lang Stuff
@@ -126,7 +142,13 @@
     // Load marker stuff
     document.markers = [];
     document.map.on('click', mapClick)
-    reloadMarkers(JSON.parse('{{ currentPositions }}'));
+    reloadMarkers(JSON.parse('{{ currentPositions }}'), () => {
+        // If checkError is enabled, open the next wrong one
+        for (position in this.positions) {
+            position = this.positions[position];
+            if (this.checkSolution(position['id'])) break;
+        }
+    });
     // Set change if exists
     if (location.hash && location.hash !== "" && location.hash !== "#"){
         setEdit(parseInt(location.hash.substr(1)))

@@ -1,7 +1,7 @@
 var editPosition;
 var positions;
 
-function reloadMarkers(positions) {
+function reloadMarkers(positions, callback) {
     for (var marker in document.markers) {
         if (document.markers.hasOwnProperty(marker)) {
             document.map.removeLayer(document.markers[marker]);
@@ -23,8 +23,12 @@ function reloadMarkers(positions) {
         }
         this.positions[position['id'].toString()] = position;
     })
-    // If guided is enabled select next available quest
-    if (document.config.guided.enable) selectNext(document.config.guided.autoCallCheck);
+    // If guided is enabled select next available quest (as long as checkSolution is not available, as it would
+    // otherwise could switch forth and back)
+    if (document.config.guided.enable && !document.config.guided.checkSolution) selectNext(document.config.guided.autoCallCheck);
+    if (callback) { // callback is used in map
+        callback().bind(this);
+    }
 }
 
 function selectNext(showCheck) {
@@ -91,20 +95,24 @@ function checkSolution(pos) {
         var resp = JSON.parse(req.responseText);
         if (req.status === 428) {
             console.error("Checking single positions is disabled on server side.")
-            return;
+            return true;
         }
         if (!resp.wrong) {
             console.error("The server does not send wrong positions");
-            return;
+            return true;
         }
-        resp['wrong'].forEach((position) => {
-            // noinspection EqualityComparisonWithCoercionJS
+        for (let position in resp['wrong']) {
+            position = resp['wrong'][position];
             if (position['id'] == pos) {
-                alert(document.lang.guidedIsWrong);
+                $('#wrongModal').modal('show');
                 setEdit(pos);
+                return true;
             }
-        })
+        }
+        // If not wrong (as otherwise returned), selectNext in reloadMarkers will not be called
+        if (document.config.guided.enable) selectNext(document.config.guided.autoCallCheck);
     }
     req.open('POST', '/api/positions');
     req.send();
+    return false;
 }
