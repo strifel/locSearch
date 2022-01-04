@@ -48,7 +48,8 @@
       "placeOnMap": "Place on Map",
       "latitude": "Latitude",
       "longitude": "Longitude",
-      "guidedIsWrong": "This position seems to be wrong"
+      "guidedIsWrong": "This position seems to be wrong",
+      "guidedSelectedWrong": "The following task still has wrong selection."
     }
   },
   "geo": {

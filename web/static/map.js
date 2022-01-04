@@ -1,8 +1,5 @@
-var editPosition;
-var positions;
-
-function reloadMarkers(positions, callback) {
-    for (var marker in document.markers) {
+function reloadMarkers(positions) {
+    for (let marker in document.markers) {
         if (document.markers.hasOwnProperty(marker)) {
             document.map.removeLayer(document.markers[marker]);
         }
@@ -14,7 +11,7 @@ function reloadMarkers(positions, callback) {
             var marker = L.marker([position['lat'], position['long']], {draggable:'true'}).addTo(document.map);
             marker.bindPopup(position['name'] + "<br><a href='#' onclick='setEdit(" + position['id'] + ")'>" + document.lang.changePosition + "</a>");
             marker.on('dragstart', function (event) {
-                editPosition = undefined;
+                this.editPosition = undefined;
             });
             marker.on('dragend', function(event){
                 move(position['id'], marker.getLatLng());
@@ -26,30 +23,16 @@ function reloadMarkers(positions, callback) {
     // If guided is enabled select next available quest (as long as checkSolution is not available, as it would
     // otherwise could switch forth and back)
     if (document.config.guided.enable && !document.config.guided.checkSolution) selectNext(document.config.guided.autoCallCheck);
-    if (callback) { // callback is used in map
-        callback().bind(this);
-    }
-}
-
-function selectNext(showCheck) {
-    for (let pos in this.positions) {
-        if (!this.positions.hasOwnProperty(pos)) continue;
-        // Continue if already set
-        if (this.positions[pos]['lat'] || this.positions[pos]['long']) continue;
-        setEdit(pos);
-        return;
-    }
-    if (showCheck) window.open('/check', '_blank')
 }
 
 function setEdit(position) {
-    editPosition = position;
+    this.editPosition = position;
     L.DomUtil.addClass(document.map._container,'crosshair-cursor-enabled');
     if (document.config.showManualCoordinatesPrompt && (!document.config.guided.enable || document.config.guided.forceCoordinateWindow)) {
         $('#coordModal').modal('show');
     }
     // Set quest view
-    var positionData = positions[position];
+    let positionData = this.positions[position];
     document.getElementById('quest-text').innerHTML = positionData['name'];
     if (positionData['image']) {
         document.getElementById('quest-image').src = '/image/' + positionData['image']
@@ -61,10 +44,9 @@ function setEdit(position) {
 }
 
 function resetEdit() {
-    editPosition = undefined;
+    this.editPosition = undefined;
     document.getElementById('quest').style.display = 'none';
     L.DomUtil.removeClass(document.map._container,'crosshair-cursor-enabled');
-
 }
 
 function mapClick(e) {
@@ -73,46 +55,17 @@ function mapClick(e) {
     }
 }
 
-
 function move(pos, latlng) {
-    var req = new XMLHttpRequest();
+    let req = new XMLHttpRequest();
     req.onloadend = function () {
-        var resp = JSON.parse(req.responseText);
+        let resp = JSON.parse(req.responseText);
         resetEdit();
         reloadMarkers(resp['positions'])
         if (document.config.guided.checkSolution) {
-            checkSolution(pos);
+            checkSingleSolution(pos);
         }
     }
     req.open('PUT', '/api/positions');
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify({'id': pos, 'lat': latlng.lat, 'long': latlng.lng}))
-}
-
-function checkSolution(pos) {
-    var req = new XMLHttpRequest()
-    req.onloadend = function () {
-        var resp = JSON.parse(req.responseText);
-        if (req.status === 428) {
-            console.error("Checking single positions is disabled on server side.")
-            return true;
-        }
-        if (!resp.wrong) {
-            console.error("The server does not send wrong positions");
-            return true;
-        }
-        for (let position in resp['wrong']) {
-            position = resp['wrong'][position];
-            if (position['id'] == pos) {
-                $('#wrongModal').modal('show');
-                setEdit(pos);
-                return true;
-            }
-        }
-        // If not wrong (as otherwise returned), selectNext in reloadMarkers will not be called
-        if (document.config.guided.enable) selectNext(document.config.guided.autoCallCheck);
-    }
-    req.open('POST', '/api/positions');
-    req.send();
-    return false;
 }

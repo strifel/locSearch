@@ -31,6 +31,7 @@
 <body>
 <div id="quest" {% if not showQuestView %}hidden{% endif %} style="display: none">
     <div style="padding: 10px">
+        <p id="guided-try-again" style="color: red" hidden>{{ lang.guidedSelectedWrong }}</p>
         <img id="quest-image" alt="current image" style="display: none; height: 5rem;" />
         <p id="quest-text"></p><br>
         {% if showManualCoordinatesPrompt %}<a href="#" onclick="$('#coordModal').modal('show');">{{ lang.enterCoordinates }}</a>{% endif %}
@@ -109,6 +110,7 @@
     </div>
 </div>
 <script src="/static/map.js"></script>
+<script src="/static/guided.js"></script>
 <script>
     // Lang Stuff
     document.lang = {};
@@ -117,7 +119,9 @@
     // Config stuff
     document.config = {};
     document.config.showManualCoordinatesPrompt = {{ showManualCoordinatesPrompt }};
-    document.config.guided = JSON.parse('{{ guidedOptions }}');
+    document.config.guided = {{ guidedOptions }};
+    // Variables
+    editPosition = undefined;
     // Create Map
     document.map = L.map('map').setView([{{ startLat }}, {{ startLong }}], {{ startZoom }});
     {% for layer in mapLayers %}
@@ -142,16 +146,13 @@
     // Load marker stuff
     document.markers = [];
     document.map.on('click', mapClick)
-    reloadMarkers(JSON.parse('{{ currentPositions }}'), () => {
-        // If checkError is enabled, open the next wrong one
-        for (position in this.positions) {
-            position = this.positions[position];
-            if (this.checkSolution(position['id'])) break;
-        }
-    });
+    reloadMarkers({{ currentPositions }});
+    // this is done here, as it is not called due to checkSolution being true
+    if (document.config.guided.enable && document.config.guided.checkSolution) selectNext(true);
+
     // Set change if exists
     if (location.hash && location.hash !== "" && location.hash !== "#"){
-        setEdit(parseInt(location.hash.substr(1)))
+        setEdit(parseInt(location.hash.substr(1)));
     }
 </script>
 {% for script in customScripts %}
