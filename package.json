@@ -12,12 +12,12 @@
   "author": "strifel",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.20.1",
+    "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "express": "^4.18.2",
-    "geolib": "^3.3.3",
-    "sqlite3": "^4.2.0",
-    "twig": "^1.15.4"
+    "geolib": "^3.3.4",
+    "sqlite3": "^5.1.7",
+    "twig": "^1.17.1"
   },
   "devDependencies": {
     "exifr": "^6.3.0"
