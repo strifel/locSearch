@@ -1,30 +1,31 @@
 <html>
 <body>
-<img src="/image/{{ file }}" alt="Picture" style="height: 50%">
+<img src="/image/{{ file }}" alt="Picture" style="height: 50%"><br>
 <br><br>
 <form>
     <label>
         File name:
-        <input type="text" name="filename" placeholder="picture.jpg">
+        <input type="text" value="{{ file }}" name="filename" placeholder="picture.jpg">
     </label><br>
     <label>
         Title:
         <input type="text" name="name">
-    </label><br>
+    </label><br><br>
+    <button onclick="convertCoordinates(prompt('coordinates'))" type="button">Other coordinate format</button><br>
     <label>
         Lat:
         {% if lat is defined %}
-            <input type="text" name="lat" value="{{ lat }}">
+            <input id="lat" type="text" name="lat" value="{{ lat }}">
         {% else %}
-            <input type="text" name="lat" placeholder="52.5161">
+            <input id="lat" type="text" name="lat" placeholder="52.5161">
         {% endif %}
     </label><br>
     <label>
         Long:
         {% if long is defined %}
-            <input type="text" name="long" value="{{ long }}">
+            <input id="long" type="text" name="long" value="{{ long }}">
         {% else %}
-            <input type="text" name="long" placeholder="13.3778">
+            <input id="long" type="text" name="long" placeholder="13.3778">
         {% endif %}
     </label><br><br>
     <button type="submit" formmethod="post">Save</button>
@@ -38,6 +39,21 @@
         }
         req.open("POST", "/skip");
         req.send();
+    }
+    
+    function convertCoordinates(coordinates) {
+        const regex = /^([NS])(\d+) (\d+\.\d+) ([EW])(\d+) (\d+\.\d+)$/;
+
+        const matches = coordinates.match(regex);
+        if (!matches) return;
+
+        const latitudeSign = matches[1] === 'N' ? 1 : -1;
+        const latitude = parseFloat(matches[2]) + parseFloat(matches[3]) / 60;
+        const longitudeSign = matches[4] === 'E' ? 1 : -1;
+        const longitude = parseFloat(matches[5]) + parseFloat(matches[6]) / 60;
+
+        document.getElementById('lat').value = latitudeSign * latitude
+        document.getElementById('long').value = longitudeSign * longitude
     }
 </script>
 </body>
