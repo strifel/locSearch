@@ -1,6 +1,7 @@
 const express = require('express');
 const dbManager = require('./db');
 const fs = require('fs');
+const path = require('path');
 const Twig = require("twig");
 const bodyParser = require('body-parser');
 const exifr = require('exifr')
@@ -12,7 +13,7 @@ let config = new dbManager.Config();
 app.use('/image', express.static('image'));
 app.use(bodyParser.urlencoded());
 
-app.set('views', './web/templates');
+app.set('views', path.resolve(__dirname, 'web/templates'));
 
 
 let files = fs.readdirSync("image/");
