@@ -1,5 +1,6 @@
 let sqlite3 = require('sqlite3');
 const fs = require('fs')
+const path = require('path');
 const geolib = require('geolib');
 
 module.exports.REGTYPE_TOKEN = "token";
@@ -10,10 +11,10 @@ module.exports.Config = class Config {
     constructor() {
         if (!fs.existsSync("config.json")) {
             console.error("Config not found! Copying standard config file. Please adjust.");
-            fs.copyFileSync("config.json.template", "config.json")
+            fs.copyFileSync(path.resolve(__dirname, "config.json.template"), "config.json")
         }
         this.config = JSON.parse(fs.readFileSync("config.json").toString());
-        this.defaultConfig = JSON.parse(fs.readFileSync("config.json.template").toString());
+        this.defaultConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, "config.json.template")).toString());
     }
 
     registrationEnabled(regType) {
@@ -204,4 +205,3 @@ module.exports.SQLite = class SQLite {
         }.bind(this))
     }
 }
-

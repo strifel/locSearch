@@ -10,6 +10,7 @@ var config = new dbManager.Config();
 var db = new dbManager.SQLite();
 const auth = require('./auth');
 const frontend = require('./frontend')
+const path = require('path');
 auth.db = db;
 app.use('/static', express.static('web/static'));
 app.use('/static', express.static('custom'));
@@ -17,7 +18,7 @@ app.use('/image', express.static('image'));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(cookies())
-app.set('views', './web/templates');
+app.set('views', path.resolve(__dirname, 'web/templates'));
 frontend.registerRoutes(app, db, auth, config, game);
 
 
