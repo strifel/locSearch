@@ -8,6 +8,7 @@
     "run": "node .",
     "setupImage": "node setUpImageSearch.js"
   },
+  "bin": "./main.js",
   "keywords": [],
   "author": "strifel",
   "license": "MIT",

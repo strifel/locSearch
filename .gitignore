@@ -6,3 +6,5 @@ image/
 *.old
 custom/*
 !custom/.gitkeep
+.direnv/
+result*
