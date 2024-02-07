@@ -12,10 +12,10 @@ const auth = require('./auth');
 const frontend = require('./frontend')
 const path = require('path');
 auth.db = db;
-app.use('/static', express.static('web/static'));
+app.use('/static', express.static(path.resolve(__dirname, 'web/static')));
 app.use('/static', express.static('custom'));
 app.use('/image', express.static('image'));
-app.use(express.static('public'));
+app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(cookies())
 app.set('views', path.resolve(__dirname, 'web/templates'));
