@@ -15,7 +15,7 @@
   "dependencies": {
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
-    "express": "^4.18.2",
+    "express": "^4.19.2",
     "geolib": "^3.3.4",
     "sqlite3": "^5.1.7",
     "twig": "^1.17.1"
