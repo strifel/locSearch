@@ -59,7 +59,7 @@ app.put('/api/positions', function (req, res) {
                 db.getPositions(auth.getToken(req)).then((result) => {
                     res.json({"message": "Saved position", positions: result})
                 })
-            });
+            }).catch(() => res.status(400).json({"error": "Could not set. Probably wrong data"}))
         } else {
             res.status(400).json({"error": "Wrong Body!"})
         }

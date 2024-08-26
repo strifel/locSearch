@@ -174,6 +174,10 @@ module.exports.SQLite = class SQLite {
 
     setPos(token, id, lat, long) {
         return new Promise(function (resolve, reject) {
+            if (typeof lat !== "number" || typeof long !== "number") {
+                reject("Not correct type");
+                return;
+            }
             this.db.get("SELECT id FROM user WHERE token=?", token, function(err, row) {
                 let user = row['id'];
                 this.db.get("SELECT position FROM userPositions WHERE position=? AND user=?", id, user, function (err, row) {

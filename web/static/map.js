@@ -58,6 +58,10 @@ function mapClick(e) {
 function move(pos, latlng) {
     let req = new XMLHttpRequest();
     req.onloadend = function () {
+        if (req.status === 400) {
+            alert("Please check the coordiante format.")
+            return;
+        }
         let resp = JSON.parse(req.responseText);
         resetEdit();
         reloadMarkers(resp['positions'])
