@@ -25,7 +25,7 @@
 
         src = inputs.self;
 
-        npmDepsHash = "sha256-+WqYKAWF/V/lVhy72IDwhT0Do/LVcw99sB/Wj1KLv/Y=";
+        npmDepsHash = "sha256-QnpGqEDbUT/MpMQgOSUt1ObeiTpCNC9Z1RCalgNzros=";
 
         dontNpmBuild = true;  # this doesn't have a build script
 
