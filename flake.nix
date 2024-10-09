@@ -14,7 +14,7 @@
     perSystem = { self', pkgs, lib, ... }: {
       devShells.default = pkgs.mkShellNoCC {
         packages = [
-          pkgs.nodejs_21
+          pkgs.nodejs_22
           pkgs.prefetch-npm-deps
         ];
       };
