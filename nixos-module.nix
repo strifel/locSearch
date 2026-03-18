@@ -8,7 +8,7 @@ self:
     package = lib.mkOption {
       description = "The locsearch package to use.";
       type = lib.types.package;
-      default = self.packages.${pkgs.hostPlatform.system}.default;
+      default = self.packages.${pkgs.stdenv.hostPlatform.system}.default;
     };
   };
 
