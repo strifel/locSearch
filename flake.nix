@@ -19,13 +19,13 @@
         ];
       };
 
-      packages.default = pkgs.buildNpmPackage rec {
+      packages.default = pkgs.buildNpmPackage {
         pname = "locsearch";
         version = "1.0.0";
 
         src = inputs.self;
 
-        npmDepsHash = "sha256-QnpGqEDbUT/MpMQgOSUt1ObeiTpCNC9Z1RCalgNzros=";
+        npmDepsHash = "sha256-/lMwMwBgTsV/Hxu8Fk2L10dkDqd119Wt127iprCo/lI=";
 
         dontNpmBuild = true;  # this doesn't have a build script
 
